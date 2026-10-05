@@ -57,7 +57,7 @@
             box-shadow: 0 25px 50px -12px rgba(123, 17, 19, 0.2);
         }
 
-        /* Para transparent at mawala ang puting paligid ng logo */
+        /* Para matanggal ang puting background ng image file at mag-blend */
         .transparent-logo {
             mix-blend-mode: multiply;
         }
@@ -136,9 +136,9 @@
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-[#7B1113]/5 rounded-full pointer-events-none"></div>
                 
                 <div class="text-center mb-6">
-                    <!-- TANGGAL NA ANG PUTING KAHON/BORDER. PURE LOGO NA LANG NA MAY MAGANDANG SIZE -->
-                    <div class="w-24 h-24 mx-auto mb-2 flex items-center justify-center">
-                        <img src="kasanlogo.png" alt="Portal Logo" class="w-full h-full object-contain transparent-logo drop-shadow-md" onerror="this.src='kasanlogo.jpg'">
+                    <!-- Nilagyan ng rounded-full at mix-blend-mode para mag-blend nang maayos sa background -->
+                    <div class="w-24 h-24 mx-auto mb-2 flex items-center justify-center overflow-hidden rounded-full">
+                        <img src="kasanlogo.png" alt="Portal Logo" class="w-full h-full object-contain transparent-logo" onerror="this.src='kasanlogo.jpg'">
                     </div>
                     <h3 class="text-xl font-extrabold tracking-tight text-[#7B1113]">Kasandigan Attendance Portal</h3>
                     <p class="text-xs text-zinc-600 mt-1">Please enter your admin account.</p>
