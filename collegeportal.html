@@ -70,13 +70,18 @@
             pointer-events: auto;
             transform: scale(1);
         }
+
+        /* Para matanggal ang puting background ng square image files */
+        .transparent-logo {
+            mix-blend-mode: multiply;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
 
     <!-- TUNAY NA BACKGROUND IMAGE GAMIT ANG IMG SRC -->
     <div class="bg-image-container">
-        <img src="C:\Users\Vina\Downloads\kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
+        <img src="kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
     </div>
 
     <!-- Top Right Controls -->
@@ -98,35 +103,35 @@
                 <!-- Left Section: Lynx Logo & Titles -->
                 <div class="flex items-center gap-4">
                     <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
-                        <img src="lynxlogo.png" alt="Lynx Logo" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+                        <img src="lynxlogo.png" alt="Lynx Logo" class="w-full h-full object-contain transparent-logo" onerror="this.src='kasanlogo.jpg'">
                     </div>
                     <div>
                         <span class="text-[11px] font-extrabold text-[#7B1113] tracking-widest uppercase">MINDANAO STATE UNIVERSITY - ILIGAN INSTITUTE OF TECHNOLOGY</span>
                         <h1 class="text-2xl md:text-3xl font-black text-[#7B1113] tracking-tight leading-none my-1">COLLEGE OF SCIENCE AND MATHEMATICS</h1>
-                        <h2 class="text-sm font-black text-[#7B1113] tracking-wider uppercase">STUDENT COUNCIL</h2>
+                        <h2 class="text-sm font-black text-[#7B1113] tracking-wider uppercase">COLLEGE ATTENDANCE PORTAL</h2>
                     </div>
                 </div>
 
                 <!-- Right Section: 5 Borderless Logos with Labels -->
                 <div class="hidden xl:flex items-center gap-6 flex-wrap justify-end">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="haynayan.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="haynayan.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">HAYNAYAN</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="statmath.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="statmath.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">STATMATH</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="massts.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="massts.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">MASSTS</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="kmp.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="kmp.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">KMP</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="chemistry.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="chemistry.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">CHEMISTRY</span>
                     </div>
                 </div>
@@ -160,7 +165,7 @@
                     
                     <div class="flex items-center gap-3.5 mb-4">
                         <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-[#7B1113]/30 bg-white flex items-center justify-center flex-shrink-0">
-                            <img src="lynxlogo.png" alt="Portal Logo" class="w-full h-full object-cover rounded-xl" onerror="this.src='kasanlogo.jpg'">
+                            <img src="lynxlogo.png" alt="Portal Logo" class="w-full h-full object-cover rounded-xl transparent-logo" onerror="this.src='kasanlogo.jpg'">
                         </div>
                         <div class="flex-grow">
                             <span class="text-[10px] font-extrabold text-zinc-600 uppercase tracking-widest block mb-0.5">Active College Event</span>
@@ -211,7 +216,7 @@
 
             </div>
 
-            <!-- RIGHT COLUMN: RECENT LOGS TABLE (ID No. | Name | Year & Program | Sign-in | Sign-out) -->
+            <!-- RIGHT COLUMN: RECENT LOGS TABLE -->
             <div class="lg:col-span-7 space-y-4">
                 <div class="beige-panel rounded-3xl shadow-2xl p-6">
                     
@@ -276,16 +281,25 @@
 
         </main>
 
-        <!-- 3 BIG LOGOS SA BABA -->
+        <!-- 3 BORDERLESS LOGOS SA BABA NA MAY MGA LABEL -->
         <div class="max-w-4xl mx-auto px-6 pb-6 pt-2 flex flex-wrap items-center justify-center gap-8">
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
-                <img src="logo1.png" alt="Big Logo 1" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo1.png" alt="KASANDIGAN" class="w-full h-full object-contain transparent-logo" onerror="this.src='kasanlogo.jpg'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">KASANDIGAN</span>
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
-                <img src="logo2.png" alt="Big Logo 2" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo2.png" alt="MSU-IIT" class="w-full h-full object-contain transparent-logo" onerror="this.src='msuiitlogo.png'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">MSU-IIT</span>
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
-                <img src="logo3.png" alt="Big Logo 3" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo3.png" alt="CSM" class="w-full h-full object-contain transparent-logo" onerror="this.src='csmlogo.png'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">CSM</span>
             </div>
         </div>
 
@@ -479,7 +493,6 @@
                     const result = await response.json();
 
                     if (result.status === "success") {
-                        // Assuming Google Apps Script returns yearProgram instead of committee/position for college level
                         updateLocalStorageRecord(result.id, result.name, result.yearProgram || result.program, result.time, result.mode, now);
                         showAlert(`Success: ${result.name} at ${result.time}`, "success");
                     } else {
