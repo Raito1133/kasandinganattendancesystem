@@ -56,6 +56,11 @@
             border: 1px solid rgba(123, 17, 19, 0.2);
             box-shadow: 0 25px 50px -12px rgba(123, 17, 19, 0.2);
         }
+
+        /* Para matanggal ang puting background ng square image file */
+        .transparent-logo {
+            mix-blend-mode: multiply;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
@@ -68,14 +73,14 @@
     <!-- MAIN CONTAINER -->
     <div class="w-full flex-grow flex flex-col justify-between">
         
-        <!-- HEADER (Parehong-pareho sa Portal) -->
+        <!-- HEADER -->
         <header class="w-full bg-[#f9f5f0]/90 backdrop-blur-xl px-6 py-4 shadow-md z-40">
             <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
                 
                 <!-- Left Section: Lynx Logo & Titles -->
                 <div class="flex items-center gap-4">
                     <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
-                        <img src="lynxlogo.png" alt="Lynx Logo" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+                        <img src="lynxlogo.png" alt="Lynx Logo" class="w-full h-full object-contain transparent-logo" onerror="this.src='kasanlogo.jpg'">
                     </div>
                     <div>
                         <span class="text-[11px] font-extrabold text-[#7B1113] tracking-widest uppercase">MINDANAO STATE UNIVERSITY - ILIGAN INSTITUTE OF TECHNOLOGY</span>
@@ -87,23 +92,23 @@
                 <!-- Right Section: 5 Borderless Logos with Labels -->
                 <div class="hidden xl:flex items-center gap-6 flex-wrap justify-end">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="haynayan.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="haynayan.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">HAYNAYAN</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="statmath.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="statmath.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">STATMATH</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="massts.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="massts.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">MASSTS</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="kmp.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="kmp.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">KMP</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="chemistry.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="chemistry.jpg" class="w-full h-full object-contain rounded-full transparent-logo" onerror="this.style.display='none'"></div>
                         <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">CHEMISTRY</span>
                     </div>
                 </div>
@@ -131,9 +136,8 @@
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-[#7B1113]/5 rounded-full pointer-events-none"></div>
                 
                 <div class="text-center mb-6">
-                    <!-- Pure logo na walang background box o border -->
                     <div class="w-20 h-20 mx-auto mb-3 flex items-center justify-center">
-                        <img src="kasanlogo.png" alt="Portal Logo" class="w-full h-full object-contain drop-shadow-md" onerror="this.src='kasanlogo.jpg'">
+                        <img src="kasanlogo.png" alt="Portal Logo" class="w-full h-full object-contain transparent-logo drop-shadow-md" onerror="this.src='kasanlogo.jpg'">
                     </div>
                     <h3 class="text-xl font-extrabold tracking-tight text-[#7B1113]">Kasandigan Attendance Portal</h3>
                     <p class="text-xs text-zinc-600 mt-1">Please enter your admin account.</p>
@@ -181,22 +185,31 @@
             </div>
         </main>
 
-        <!-- 3 BORDERLESS LOGOS SA BABA -->
+        <!-- 3 BORDERLESS LOGOS SA BABA NA MAY MGA LABEL -->
         <div class="max-w-4xl mx-auto px-6 pb-6 pt-2 flex flex-wrap items-center justify-center gap-8">
-            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
-                <img src="logo1.png" alt="Big Logo 1" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo1.png" alt="KASANDIGAN" class="w-full h-full object-contain transparent-logo" onerror="this.src='kasanlogo.jpg'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">KASANDIGAN</span>
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
-                <img src="logo2.png" alt="Big Logo 2" class="w-full h-full object-contain" onerror="this.src='msuiitlogo.png'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo2.png" alt="MSU-IIT" class="w-full h-full object-contain transparent-logo" onerror="this.src='msuiitlogo.png'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">MSU-IIT</span>
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
-                <img src="logo3.png" alt="Big Logo 3" class="w-full h-full object-contain" onerror="this.src='csmlogo.png'">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 overflow-hidden flex items-center justify-center p-1">
+                    <img src="logo3.png" alt="CSM" class="w-full h-full object-contain transparent-logo" onerror="this.src='csmlogo.png'">
+                </div>
+                <span class="text-[9px] font-extrabold text-[#7B1113] mt-1 tracking-wider">CSM</span>
             </div>
         </div>
 
         <!-- PLAIN FOOTER LETTER -->
         <footer class="w-full py-4 text-center text-xs font-bold text-[#7B1113] tracking-wider bg-transparent">
-            By StRaW Usec. John Patrick Navalta
+            By StRaW Usec. John Patrick Navalta Viajante
         </footer>
 
     </div>
