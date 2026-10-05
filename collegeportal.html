@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSU-IIT CSM - College Attendance Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="kasanlogo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f4efea;
+            color: #27272a;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* TUNAY NA IMG TAG BILANG BUONG BACKGROUND NA MAY BLUR EFFECT */
+        .bg-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -10;
+            overflow: hidden;
+        }
+
+        .bg-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px);
+            transform: scale(1.05);
+        }
+
+        /* BEIGE PANELS NA MAY BLUR SA LIKOD */
+        .beige-panel {
+            background: rgba(249, 245, 240, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(123, 17, 19, 0.15);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* CREAM/BEIGE ATTENDANCE FORM PANEL */
+        .hero-panel {
+            background: rgba(249, 245, 240, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(123, 17, 19, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(123, 17, 19, 0.2);
+        }
+
+        .fade-transition {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+        .modal-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative">
+
+    <!-- TUNAY NA BACKGROUND IMAGE GAMIT ANG IMG SRC -->
+    <div class="bg-image-container">
+        <img src="C:\Users\Vina\Downloads\kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Top Right Controls -->
+    <div class="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <button id="settingsBtn" class="w-11 h-11 bg-white hover:bg-zinc-50 text-[#7B1113] rounded-full shadow-lg border border-[#7B1113]/30 transition transform hover:scale-105 flex items-center justify-center backdrop-blur-md" title="System Settings">
+            <i class="fa-solid fa-gear text-base"></i>
+        </button>
+        <button onclick="confirmLogout()" class="w-11 h-11 bg-white hover:bg-red-50 text-red-700 rounded-full shadow-lg border border-red-300 transition transform hover:scale-105 flex items-center justify-center backdrop-blur-md" title="Log Out">
+            <i class="fa-solid fa-right-from-bracket text-base"></i>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full flex-grow">
+        <!-- HEADER -->
+        <header class="w-full bg-[#f9f5f0]/90 backdrop-blur-xl px-6 py-4 shadow-md sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+                
+                <!-- Left Section: Lynx Logo & Titles -->
+                <div class="flex items-center gap-4">
+                    <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+                        <img src="lynxlogo.png" alt="Lynx Logo" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-extrabold text-[#7B1113] tracking-widest uppercase">MINDANAO STATE UNIVERSITY - ILIGAN INSTITUTE OF TECHNOLOGY</span>
+                        <h1 class="text-2xl md:text-3xl font-black text-[#7B1113] tracking-tight leading-none my-1">COLLEGE OF SCIENCE AND MATHEMATICS</h1>
+                        <h2 class="text-sm font-black text-[#7B1113] tracking-wider uppercase">STUDENT COUNCIL</h2>
+                    </div>
+                </div>
+
+                <!-- Right Section: 5 Borderless Logos with Labels -->
+                <div class="hidden xl:flex items-center gap-6 flex-wrap justify-end">
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="haynayan.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">HAYNAYAN</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="statmath.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">STATMATH</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="massts.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">MASSTS</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="kmp.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">KMP</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 overflow-hidden flex items-center justify-center"><img src="chemistry.jpg" class="w-full h-full object-contain rounded-full" onerror="this.style.display='none'"></div>
+                        <span class="text-[10px] font-extrabold text-[#7B1113] mt-1.5 tracking-wider">CHEMISTRY</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Subheader Line -->
+            <div class="max-w-7xl mx-auto mt-3 pt-2 flex items-center text-xs font-semibold text-[#7B1113] gap-6">
+                <span class="text-xs italic text-[#7B1113] font-serif">excellentia est norma</span>
+
+                <div class="flex items-center">
+                    <div class="w-[400px] flex h-[3px]">
+                        <div class="w-[75%] bg-[#7B1113]"></div>
+                        <div class="w-[25%] bg-amber-400"></div>
+                    </div>
+                </div>
+
+                <span class="whitespace-nowrap">csm.sc@g.msuiit.edu.ph</span>
+            </div>
+        </header>
+
+        <!-- DASHBOARD CONTENT -->
+        <main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- LEFT COLUMN: INPUT CARD & EVENT INFO -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Event Title Card -->
+                <div class="beige-panel rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#7B1113]"></div>
+                    
+                    <div class="flex items-center gap-3.5 mb-4">
+                        <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-[#7B1113]/30 bg-white flex items-center justify-center flex-shrink-0">
+                            <img src="lynxlogo.png" alt="Portal Logo" class="w-full h-full object-cover rounded-xl" onerror="this.src='kasanlogo.jpg'">
+                        </div>
+                        <div class="flex-grow">
+                            <span class="text-[10px] font-extrabold text-zinc-600 uppercase tracking-widest block mb-0.5">Active College Event</span>
+                            <input type="text" id="eventTitleInput" value="College General Assembly Attendance" oninput="updateEventTitle()"
+                                class="text-base md:text-xl font-black text-[#7B1113] bg-transparent border-b border-dashed border-[#7B1113]/30 hover:border-[#7B1113] focus:border-[#7B1113] focus:outline-none w-full py-1 transition tracking-tight">
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex items-center justify-between pt-2 border-t border-[#7B1113]/10">
+                        <span id="currentModeIndicator" class="text-xs font-bold text-emerald-800 bg-emerald-100/90 py-1 px-3 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Sign-In Active
+                        </span>
+                        <span class="text-xs font-mono text-zinc-700 font-bold" id="liveClock">00:00:00 AM</span>
+                    </div>
+                </div>
+
+                <!-- Main Attendance Form Card -->
+                <div class="hero-panel rounded-3xl p-6 md:p-8 text-zinc-900 shadow-2xl relative overflow-hidden border border-[#7B1113]/25">
+                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-[#7B1113]/5 rounded-full pointer-events-none"></div>
+                    
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-[#f9f5f0] rounded-2xl flex items-center justify-center text-xl text-[#7B1113] shadow-inner">
+                            <i id="modeIcon" class="fa-solid fa-right-to-bracket"></i>
+                        </div>
+                        <div>
+                            <h3 id="cardTitle" class="text-lg font-extrabold tracking-tight text-[#7B1113]">College Sign-In</h3>
+                            <p id="cardSubtitle" class="text-xs text-zinc-600">Enter ID No. or Surname, First Name</p>
+                        </div>
+                    </div>
+
+                    <form id="attendanceForm" onsubmit="handleAttendance(event)" class="space-y-4">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-zinc-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </span>
+                            <input type="text" id="idInput" required placeholder="e.g. Viajante, John Patrick" 
+                                class="w-full pl-11 pr-4 py-3.5 bg-white text-zinc-900 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#7B1113]/20 font-semibold text-sm shadow-inner placeholder:text-zinc-400 border border-zinc-200">
+                        </div>
+                        
+                        <button type="submit" id="submitBtn" class="w-full bg-[#7B1113] hover:bg-[#5c0c0e] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-xl transition transform active:scale-95 duration-200 flex items-center justify-center gap-2 text-sm tracking-wide">
+                            <span>Sign-In</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+
+                    <div id="alertBox" class="mt-4 hidden p-3.5 rounded-2xl text-xs font-bold backdrop-blur-md transition-all"></div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: RECENT LOGS TABLE (ID No. | Name | Year & Program | Sign-in | Sign-out) -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="beige-panel rounded-3xl shadow-2xl p-6">
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-between mb-5 gap-3">
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-extrabold text-zinc-900 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-[#7B1113]"></i> College Logs
+                            </h3>
+                            <span id="recordCount" class="text-xs bg-[#7B1113]/10 text-[#7B1113] border border-[#7B1113]/20 px-2.5 py-0.5 rounded-full font-mono font-bold">0 logs</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <div class="relative flex-grow sm:w-44">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-zinc-400">
+                                    <i class="fa-solid fa-search text-xs"></i>
+                                </span>
+                                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search records..." 
+                                    class="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-zinc-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#7B1113]/20 shadow-sm">
+                            </div>
+                            <button onclick="manualRefreshLogs()" class="p-2 text-xs bg-white hover:bg-amber-50 hover:text-amber-700 text-zinc-700 rounded-xl transition shadow-sm border border-zinc-300 flex items-center gap-1 font-bold" title="Refresh Table">
+                                <i class="fa-solid fa-rotate" id="refreshIcon"></i>
+                            </button>
+                            <button onclick="clearTableLogs()" class="p-2 text-xs bg-white hover:bg-red-50 hover:text-red-700 text-zinc-600 rounded-xl transition shadow-sm border border-zinc-300" title="Clear Logs">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl overflow-hidden bg-white shadow-md">
+                        <div class="overflow-x-auto min-h-[260px] max-h-[260px]">
+                            <table class="w-full text-left border-collapse text-xs" id="attendanceTable">
+                                <thead class="sticky top-0 bg-[#7B1113] text-white uppercase tracking-wider font-semibold z-10">
+                                    <tr>
+                                        <th class="py-3 px-3.5">ID NO.</th>
+                                        <th class="py-3 px-3.5">NAME</th>
+                                        <th class="py-3 px-3.5">YEAR & PROGRAM</th>
+                                        <th class="py-3 px-3.5 text-center">SIGN IN</th>
+                                        <th class="py-3 px-3.5 text-center">SIGN OUT</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody" class="divide-y divide-zinc-100 text-zinc-700 font-medium">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="emptyState" class="py-12 text-center text-zinc-400 text-xs italic bg-white">
+                            No college attendance records logged yet.
+                        </div>
+                    </div>
+
+                    <div id="paginationBar" class="mt-4 flex items-center justify-between text-xs font-semibold text-zinc-600 pt-2 border-t border-[#7B1113]/15">
+                        <span id="pageInfo">Showing 0-0 of 0 logs</span>
+                        <div class="flex items-center gap-1.5">
+                            <button id="prevBtn" onclick="changePage(-1)" class="px-3 py-1.5 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-40 transition text-[#7B1113] shadow-sm">Prev</button>
+                            <span id="currentPageNum" class="font-bold px-2 text-zinc-800">1 / 1</span>
+                            <button id="nextBtn" onclick="changePage(1)" class="px-3 py-1.5 bg-white border border-zinc-300 rounded-lg hover:bg-zinc-50 disabled:opacity-40 transition text-[#7B1113] shadow-sm">Next</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+
+        <!-- 3 BIG LOGOS SA BABA -->
+        <div class="max-w-4xl mx-auto px-6 pb-6 pt-2 flex flex-wrap items-center justify-center gap-8">
+            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
+                <img src="logo1.png" alt="Big Logo 1" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            </div>
+            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
+                <img src="logo2.png" alt="Big Logo 2" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            </div>
+            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
+                <img src="logo3.png" alt="Big Logo 3" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+            </div>
+        </div>
+
+        <!-- PLAIN FOOTER LETTER -->
+        <footer class="w-full py-4 text-center text-xs font-bold text-[#7B1113] tracking-wider bg-transparent">
+            By StRaW Usec. John Patrick Navalta
+        </footer>
+
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-transition modal-hidden">
+        <div class="bg-[#f9f5f0] rounded-3xl shadow-2xl max-w-md w-full p-6 relative border border-[#7B1113]/25 backdrop-blur-xl">
+            <button onclick="toggleSettingsModal(false)" class="absolute top-5 right-5 text-zinc-400 hover:text-zinc-700 p-1 transition transform hover:rotate-90">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-base font-extrabold text-[#7B1113] mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-sliders"></i> College System Settings & Flexibility
+            </h3>
+            
+            <div class="space-y-4 text-xs">
+                <!-- PORTAL SWITCHER -->
+                <div class="p-4 bg-white/70 rounded-2xl border border-[#7B1113]/15">
+                    <label class="block font-bold text-[#7B1113] mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-exchange-alt"></i> Portal Switcher
+                    </label>
+                    <p class="text-[11px] text-zinc-600 mb-3">Switch between Whole College Attendance and Student Council Attendance.</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="window.location.href='collegeportal.html'" class="py-2.5 px-3 font-bold rounded-xl bg-[#7B1113] text-white shadow transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-building-columns"></i> College
+                        </button>
+                        <button onclick="window.location.href='councilportal.html'" class="py-2.5 px-3 font-bold rounded-xl bg-white text-[#7B1113] border border-[#7B1113]/30 hover:bg-zinc-50 transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-users-gear"></i> Student Council
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LATE TIME ADJUSTMENT -->
+                <div class="p-4 bg-white/70 rounded-2xl border border-zinc-300">
+                    <label class="block font-bold text-zinc-800 mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock text-[#7B1113]"></i> Late Threshold Time (Present until:)
+                    </label>
+                    <p class="text-[11px] text-zinc-500 mb-2">Sign-ins past this time will be marked as Late (Yellow).</p>
+                    <div class="flex gap-2">
+                        <input type="time" id="lateThresholdInput" 
+                            class="flex-grow px-3 py-2 bg-white border border-zinc-300 rounded-xl font-bold text-sm text-zinc-800 shadow-inner">
+                        <button onclick="saveLateThreshold()" class="bg-[#7B1113] hover:bg-[#5c0c0e] text-white font-extrabold px-4 py-2 rounded-xl transition shadow-sm text-xs">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Save
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white/70 rounded-2xl border border-zinc-300">
+                    <label class="block font-bold text-zinc-800 mb-2">Attendance Mode</label>
+                    <div class="flex bg-zinc-200 p-1 rounded-xl shadow-inner">
+                        <button id="modalModeSignIn" onclick="setMode('signin')" class="flex-1 py-2 font-bold rounded-lg transition-all duration-300 bg-[#7B1113] text-white shadow scale-105">Sign-In</button>
+                        <button id="modalModeSignOut" onclick="setMode('signout')" class="flex-1 py-2 font-bold rounded-lg transition-all duration-300 text-zinc-700 hover:text-black scale-100">Sign-Out</button>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-white/70 rounded-2xl border border-zinc-300">
+                    <label class="block font-bold text-zinc-800 mb-1">Google Sheets Web App URL</label>
+                    <input type="text" id="sheetsUrlInput" placeholder="https://script.google.com/macros/s/.../exec" 
+                        class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl mb-2 font-mono text-[11px]">
+                    <button onclick="saveSheetsUrl()" class="w-full bg-[#7B1113] hover:bg-[#5c0c0e] text-white font-bold py-2.5 rounded-xl transition shadow-sm">Save Link</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        let currentMode = 'signin';
+        let attendanceRecords = JSON.parse(localStorage.getItem('csm_attendance_records')) || [];
+        let currentPage = 1;
+        const rowsPerPage = 5;
+        let filteredRecords = [...attendanceRecords];
+        let isSubmitting = false;
+
+        function confirmLogout() {
+            if (confirm("Log out to password screen?")) {
+                window.location.href = "index.html";
+            }
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').innerText = now.toLocaleTimeString();
+        }, 1000);
+
+        function setMode(mode) {
+            currentMode = mode;
+            const modalBtnIn = document.getElementById('modalModeSignIn');
+            const modalBtnOut = document.getElementById('modalModeSignOut');
+            const cardTitle = document.getElementById('cardTitle');
+            const cardSubtitle = document.getElementById('cardSubtitle');
+            const modeIcon = document.getElementById('modeIcon');
+            const submitBtn = document.getElementById('submitBtn');
+            const modeIndicator = document.getElementById('currentModeIndicator');
+
+            if (mode === 'signin') {
+                modalBtnIn.className = "flex-1 py-2 font-bold rounded-lg transition-all duration-300 bg-[#7B1113] text-white shadow scale-105";
+                modalBtnOut.className = "flex-1 py-2 font-bold rounded-lg transition-all duration-300 text-zinc-700 hover:text-black scale-100";
+                cardTitle.innerText = "College Sign-In";
+                cardSubtitle.innerText = "Enter ID No. or Surname, First Name";
+                modeIcon.className = "fa-solid fa-right-to-bracket text-[#7B1113]";
+                modeIndicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Sign-In Active';
+                modeIndicator.className = "text-xs font-bold text-emerald-800 bg-emerald-100/90 py-1 px-3 rounded-full border border-emerald-200 flex items-center gap-1.5 shadow-sm";
+                if (!isSubmitting) submitBtn.innerHTML = '<span>Sign-In</span> <i class="fa-solid fa-arrow-right"></i>';
+            } else {
+                modalBtnOut.className = "flex-1 py-2 font-bold rounded-lg transition-all duration-300 bg-[#7B1113] text-white shadow scale-105";
+                modalBtnIn.className = "flex-1 py-2 font-bold rounded-lg transition-all duration-300 text-zinc-700 hover:text-black scale-100";
+                cardTitle.innerText = "College Sign-Out";
+                cardSubtitle.innerText = "Enter ID No. or Surname, First Name";
+                modeIcon.className = "fa-solid fa-right-from-bracket text-[#7B1113]";
+                modeIndicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> Sign-Out Active';
+                modeIndicator.className = "text-xs font-bold text-amber-900 bg-amber-100/90 py-1 px-3 rounded-full border border-amber-200 flex items-center gap-1.5 shadow-sm";
+                if (!isSubmitting) submitBtn.innerHTML = '<span>Sign-Out</span> <i class="fa-solid fa-arrow-right"></i>';
+            }
+            hideAlert();
+        }
+
+        function updateEventTitle() {
+            localStorage.setItem('csm_event_title', document.getElementById('eventTitleInput').value);
+        }
+
+        function saveLateThreshold() {
+            const val = document.getElementById('lateThresholdInput').value;
+            localStorage.setItem('csm_late_threshold', val);
+            alert("Late threshold time successfully saved!");
+        }
+
+        function manualRefreshLogs() {
+            const icon = document.getElementById('refreshIcon');
+            icon.classList.add('fa-spin');
+            
+            const savedRecords = JSON.parse(localStorage.getItem('csm_attendance_records')) || [];
+            attendanceRecords = savedRecords;
+            filterTable();
+
+            setTimeout(() => {
+                icon.classList.remove('fa-spin');
+                showAlert("Table successfully refreshed!", "success");
+            }, 600);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTitle = localStorage.getItem('csm_event_title');
+            if (savedTitle) document.getElementById('eventTitleInput').value = savedTitle;
+            
+            const savedThreshold = localStorage.getItem('csm_late_threshold');
+            if (savedThreshold) {
+                document.getElementById('lateThresholdInput').value = savedThreshold;
+            } else {
+                document.getElementById('lateThresholdInput').value = "09:00";
+            }
+
+            filterTable();
+            setInterval(syncLocalRecords, 5000);
+        });
+
+        function syncLocalRecords() {
+            const savedRecords = JSON.parse(localStorage.getItem('csm_attendance_records'));
+            if (savedRecords && JSON.stringify(savedRecords) !== JSON.stringify(attendanceRecords)) {
+                attendanceRecords = savedRecords;
+                filterTable();
+            }
+        }
+
+        async function handleAttendance(event) {
+            event.preventDefault();
+            if (isSubmitting) return;
+
+            const idInput = document.getElementById('idInput');
+            const searchKey = idInput.value.trim();
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            if (!searchKey) return;
+            const webAppUrl = localStorage.getItem('csm_sheets_url');
+
+            if (webAppUrl) {
+                isSubmitting = true;
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Processing...';
+
+                try {
+                    const url = `${webAppUrl}?idNo=${encodeURIComponent(searchKey)}&mode=${currentMode}&timeString=${encodeURIComponent(timeString)}`;
+                    const response = await fetch(url);
+                    const result = await response.json();
+
+                    if (result.status === "success") {
+                        // Assuming Google Apps Script returns yearProgram instead of committee/position for college level
+                        updateLocalStorageRecord(result.id, result.name, result.yearProgram || result.program, result.time, result.mode, now);
+                        showAlert(`Success: ${result.name} at ${result.time}`, "success");
+                    } else {
+                        showAlert(result.message, "warning");
+                    }
+                } catch (error) {
+                    showAlert("Error connecting to Google Sheets.", "warning");
+                } finally {
+                    setTimeout(() => {
+                        isSubmitting = false;
+                        submitBtn.disabled = false;
+                        setMode(currentMode);
+                    }, 2000);
+                }
+            } else {
+                showAlert("Please configure your Google Sheets URL in settings!", "warning");
+            }
+            idInput.value = '';
+        }
+
+        function updateLocalStorageRecord(idNo, name, yearProgram, timeString, mode, dateObj) {
+            let existingRecordIndex = attendanceRecords.findIndex(r => r.name && r.name.toLowerCase() === name.toLowerCase());
+
+            const thresholdStr = localStorage.getItem('csm_late_threshold') || "09:00";
+            const [threshHours, threshMinutes] = thresholdStr.split(':').map(Number);
+            const currentHours = dateObj.getHours();
+            const currentMinutes = dateObj.getMinutes();
+            
+            const isLate = (currentHours > threshHours) || (currentHours === threshHours && currentMinutes > threshMinutes);
+
+            if (mode === 'signin') {
+                if (existingRecordIndex !== -1) {
+                    attendanceRecords[existingRecordIndex].signIn = timeString;
+                    attendanceRecords[existingRecordIndex].isLate = isLate;
+                    if(idNo) attendanceRecords[existingRecordIndex].id = idNo;
+                    if(yearProgram) attendanceRecords[existingRecordIndex].yearProgram = yearProgram;
+                } else {
+                    attendanceRecords.unshift({ id: idNo || '—', name, yearProgram: yearProgram || '—', signIn: timeString, signOut: "", isLate });
+                }
+            } else {
+                if (existingRecordIndex !== -1) {
+                    attendanceRecords[existingRecordIndex].signOut = timeString;
+                    if(idNo) attendanceRecords[existingRecordIndex].id = idNo;
+                    if(yearProgram) attendanceRecords[existingRecordIndex].yearProgram = yearProgram;
+                } else {
+                    attendanceRecords.unshift({ id: idNo || '—', name, yearProgram: yearProgram || '—', signIn: "", signOut: timeString, isLate: false });
+                }
+            }
+            localStorage.setItem('csm_attendance_records', JSON.stringify(attendanceRecords));
+            filterTable();
+        }
+
+        function clearTableLogs() {
+            if (confirm("Clear recent logs view?")) {
+                attendanceRecords = [];
+                localStorage.removeItem('csm_attendance_records');
+                filterTable();
+            }
+        }
+
+        function filterTable() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            filteredRecords = attendanceRecords.filter(r => 
+                (r.id && r.id.toLowerCase().includes(query)) ||
+                (r.name && r.name.toLowerCase().includes(query)) || 
+                (r.yearProgram && r.yearProgram.toLowerCase().includes(query))
+            );
+            currentPage = 1;
+            renderTable();
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredRecords.length / rowsPerPage) || 1;
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            const paginationBar = document.getElementById('paginationBar');
+            const recordCount = document.getElementById('recordCount');
+            
+            tbody.innerHTML = '';
+            recordCount.innerText = `${attendanceRecords.length} logs`;
+
+            if (filteredRecords.length === 0) {
+                emptyState.style.display = 'block';
+                paginationBar.style.display = 'none';
+                return;
+            } else {
+                emptyState.style.display = 'none';
+                paginationBar.style.display = 'flex';
+            }
+
+            const totalPages = Math.ceil(filteredRecords.length / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedItems = filteredRecords.slice(start, end);
+
+            paginatedItems.forEach((record) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-red-50/40 transition text-xs";
+                
+                let signInBg = "text-zinc-300";
+                if (record.signIn) {
+                    if (record.isLate) {
+                        signInBg = "bg-amber-100 text-amber-900 font-extrabold text-center";
+                    } else {
+                        signInBg = "bg-emerald-50 text-emerald-800 font-extrabold text-center";
+                    }
+                }
+                const signOutClass = record.signOut ? "bg-emerald-50 text-emerald-800 font-extrabold text-center" : "text-zinc-300 text-center";
+
+                tr.innerHTML = `
+                    <td class="py-3 px-3.5 font-mono font-bold text-[#7B1113]">${record.id || '—'}</td>
+                    <td class="py-3 px-3.5 text-zinc-900 font-bold">${record.name || '—'}</td>
+                    <td class="py-3 px-3.5 text-zinc-600 font-semibold">${record.yearProgram || '—'}</td>
+                    <td class="py-3 px-3.5 ${signInBg}">${record.signIn || '—'} ${record.isLate ? '<span class="text-[9px] block text-amber-700 font-bold">(Late)</span>' : ''}</td>
+                    <td class="py-3 px-3.5 ${signOutClass}">${record.signOut || '—'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('pageInfo').innerText = `Showing ${start + 1}-${Math.min(end, filteredRecords.length)} of ${filteredRecords.length} logs`;
+            document.getElementById('currentPageNum').innerText = `${currentPage} / ${totalPages || 1}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.classList.remove('hidden', 'bg-emerald-400/20', 'text-emerald-100', 'bg-amber-400/20', 'text-amber-100', 'bg-emerald-500/20', 'text-emerald-950', 'border-emerald-300');
+            alertBox.classList.add('bg-emerald-500/20', 'text-emerald-950', 'border', 'border-emerald-400', 'font-extrabold');
+            alertBox.innerText = message;
+            setTimeout(() => alertBox.classList.add('hidden'), 6000);
+        }
+
+        function hideAlert() { document.getElementById('alertBox').classList.add('hidden'); }
+
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsModal = document.getElementById('settingsModal');
+
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.classList.remove('modal-hidden');
+            settingsModal.classList.add('modal-visible');
+            document.getElementById('sheetsUrlInput').value = localStorage.getItem('csm_sheets_url') || '';
+        });
+
+        function toggleSettingsModal(show) {
+            if (show) {
+                settingsModal.classList.remove('modal-hidden');
+                settingsModal.classList.add('modal-visible');
+            } else {
+                settingsModal.classList.remove('modal-visible');
+                settingsModal.classList.add('modal-hidden');
+            }
+        }
+
+        function saveSheetsUrl() {
+            const url = document.getElementById('sheetsUrlInput').value.trim();
+            localStorage.setItem('csm_sheets_url', url);
+            alert('Google Sheets URL saved for College Attendance!');
+            toggleSettingsModal(false);
+        }
+    </script>
+</body>
+</html>
