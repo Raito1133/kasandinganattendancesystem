@@ -62,7 +62,7 @@
 
     <!-- TUNAY NA BACKGROUND IMAGE GAMIT ANG IMG SRC -->
     <div class="bg-image-container">
-        <img src="C:\Users\Vina\Downloads\kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
+        <img src="kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
     </div>
 
     <!-- MAIN CONTAINER -->
@@ -131,9 +131,8 @@
                 <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-[#7B1113]/5 rounded-full pointer-events-none"></div>
                 
                 <div class="text-center mb-6">
-                    <!-- Pinalitan ang lock icon ng lynxlogo.png -->
                     <div class="w-16 h-16 bg-[#f9f5f0] rounded-2xl flex items-center justify-center overflow-hidden shadow-inner mx-auto mb-3 border border-[#7B1113]/20 p-1.5">
-                        <img src="lynxlogo.png" alt="Portal Logo" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
+                        <img src="kasanlogo.png" alt="Portal Logo" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
                     </div>
                     <h3 class="text-xl font-extrabold tracking-tight text-[#7B1113]">Kasandigan Attendance Portal</h3>
                     <p class="text-xs text-zinc-600 mt-1">Please enter your admin account.</p>
@@ -181,15 +180,15 @@
             </div>
         </main>
 
-        <!-- 3 BIG LOGOS SA BABA -->
+        <!-- 3 BORDERLESS LOGOS SA BABA -->
         <div class="max-w-4xl mx-auto px-6 pb-6 pt-2 flex flex-wrap items-center justify-center gap-8">
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
+            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
                 <img src="logo1.png" alt="Big Logo 1" class="w-full h-full object-contain" onerror="this.src='kasanlogo.jpg'">
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
-                <img src="logo2.png" alt="Big Logo 2" class="w-full h-full object-contain" onerror="this.src='msuiitlogo.png">
+            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
+                <img src="logo2.png" alt="Big Logo 2" class="w-full h-full object-contain" onerror="this.src='msuiitlogo.png'">
             </div>
-            <div class="w-24 h-24 rounded-3xl overflow-hidden shadow-xl border-2 border-[#7B1113]/30 bg-white/90 backdrop-blur-md flex items-center justify-center p-2">
+            <div class="w-24 h-24 rounded-3xl overflow-hidden flex items-center justify-center p-2">
                 <img src="logo3.png" alt="Big Logo 3" class="w-full h-full object-contain" onerror="this.src='csmlogo.png'">
             </div>
         </div>
@@ -210,7 +209,6 @@
             const destination = document.getElementById('portalDestination').value;
             const alertBox = document.getElementById('loginAlert');
 
-            // Palitan ang username at password dito kung ano ang gusto mo
             if (user === "csmadmin" && pass === "csm2026") {
                 alertBox.classList.add('hidden');
                 window.location.href = destination;
