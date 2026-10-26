@@ -224,7 +224,16 @@
             const destination = document.getElementById('portalDestination').value;
             const alertBox = document.getElementById('loginAlert');
 
-            if (user === "csmadmin" && pass === "csm2026") {
+            const validAccounts = [
+                { username: "csmadmin", password: "csm2026" },
+                { username: "jbtabimina", password: "papakongderrick" }
+            ];
+
+            const isValidAccount = validAccounts.some(account =>
+                user === account.username && pass === account.password
+            );
+
+            if (isValidAccount) {
                 alertBox.classList.add('hidden');
                 window.location.href = destination;
             } else {
