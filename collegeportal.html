@@ -74,6 +74,30 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
+    <!-- PORTAL LOGIN GATE -->
+    <div id="loginGate" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+        <form id="portalLoginForm" class="w-full max-w-sm bg-[#f9f5f0] rounded-3xl shadow-2xl border border-[#7B1113]/25 p-7 space-y-4">
+            <div class="flex justify-center">
+                <img src="lynxlogo.png" alt="CSM Portal Logo" class="w-20 h-20 object-contain" onerror="this.src='kasanlogo.jpg'">
+            </div>
+            <div class="text-center">
+                <h2 class="text-xl font-black text-[#7B1113]">CSM Attendance Portal</h2>
+                <p class="text-xs text-zinc-600 mt-1">Sign in to access the attendance system</p>
+            </div>
+            <div>
+                <label for="portalUsername" class="block text-xs font-bold text-zinc-700 mb-1">Username</label>
+                <input id="portalUsername" autocomplete="username" required class="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7B1113]/20" placeholder="Enter username">
+            </div>
+            <div>
+                <label for="portalPassword" class="block text-xs font-bold text-zinc-700 mb-1">Password</label>
+                <input id="portalPassword" type="password" autocomplete="current-password" required class="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7B1113]/20" placeholder="Enter password">
+            </div>
+            <p id="loginError" class="hidden text-xs font-bold text-red-700" role="alert">Incorrect username or password.</p>
+            <button type="submit" class="w-full bg-[#7B1113] hover:bg-[#5c0c0e] text-white font-extrabold py-3 rounded-xl shadow transition">Sign In</button>
+            <p class="text-[10px] text-zinc-500 text-center">Authorized CSM personnel only</p>
+        </form>
+    </div>
+
 
     <div class="bg-image-container">
         <img src="kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
@@ -235,7 +259,7 @@
                                     <tr>
                                         <th class="py-3 px-3.5">ID NO.</th>
                                         <th class="py-3 px-3.5">NAME</th>
-                                        <th class="py-3 px-3.5">PROGRAM</th>
+                                        <th class="py-3 px-3.5">YEAR LEVEL</th>
                                         <th class="py-3 px-3.5 text-center">SIGN IN</th>
                                         <th class="py-3 px-3.5 text-center">SIGN OUT</th>
                                     </tr>
@@ -350,6 +374,41 @@
 
     <!-- SCRIPTS -->
     <script>
+
+        // Basic client-side login gate. For real security, validate credentials on a server.
+        const PORTAL_ACCOUNTS = [
+            { username: "csmadmin", password: "CHANGE_THIS_EXISTING_PASSWORD" },
+            { username: "jbtabimina", password: "papakong derrick" }
+        ];
+
+        function showPortalLogin() {
+            document.getElementById('loginGate').classList.remove('hidden');
+        }
+
+        function hidePortalLogin() {
+            document.getElementById('loginGate').classList.add('hidden');
+        }
+
+        document.getElementById('portalLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('portalUsername').value.trim();
+            const password = document.getElementById('portalPassword').value;
+            const valid = PORTAL_ACCOUNTS.some(account =>
+                account.username === username && account.password === password
+            );
+            if (valid) {
+                sessionStorage.setItem('csm_portal_authenticated', 'true');
+                document.getElementById('loginError').classList.add('hidden');
+                hidePortalLogin();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        });
+
+        if (sessionStorage.getItem('csm_portal_authenticated') === 'true') {
+            hidePortalLogin();
+        }
+
         let currentMode = 'signin';
         let attendanceRecords = JSON.parse(localStorage.getItem('csm_attendance_records')) || [];
         let currentPage = 1;
@@ -358,7 +417,8 @@
         let isSubmitting = false;
 
         function confirmLogout() {
-            if (confirm("Log out to password screen?")) {
+            if (confirm("Log out of the attendance portal?")) {
+                sessionStorage.removeItem('csm_portal_authenticated');
                 window.location.href = "index.html";
             }
         }
@@ -474,7 +534,7 @@
                     const result = await response.json();
 
                     if (result.status === "success") {
-                        updateLocalStorageRecord(result.id, result.name, result.yearProgram || result.program, result.time, result.mode, now);
+                        updateLocalStorageRecord(result.id, result.name, result.yearLevel || result.yearProgram || result.program, result.time, result.mode, now);
                         showAlert(`Success: ${result.name} at ${result.time}`, "success");
                     } else {
                         showAlert(result.message, "warning");
@@ -494,7 +554,7 @@
             idInput.value = '';
         }
 
-        function updateLocalStorageRecord(idNo, name, yearProgram, timeString, mode, dateObj) {
+        function updateLocalStorageRecord(idNo, name, yearLevel, timeString, mode, dateObj) {
             let existingRecordIndex = attendanceRecords.findIndex(r => r.name && r.name.toLowerCase() === name.toLowerCase());
 
             const thresholdStr = localStorage.getItem('csm_late_threshold') || "07:30";
@@ -509,17 +569,17 @@
                     attendanceRecords[existingRecordIndex].signIn = timeString;
                     attendanceRecords[existingRecordIndex].isLate = isLate;
                     if(idNo) attendanceRecords[existingRecordIndex].id = idNo;
-                    if(yearProgram) attendanceRecords[existingRecordIndex].yearProgram = yearProgram;
+                    if(yearLevel) attendanceRecords[existingRecordIndex].yearLevel = yearLevel;
                 } else {
-                    attendanceRecords.unshift({ id: idNo || '—', name, yearProgram: yearProgram || '—', signIn: timeString, signOut: "", isLate });
+                    attendanceRecords.unshift({ id: idNo || '—', name, yearLevel: yearLevel || '—', signIn: timeString, signOut: "", isLate });
                 }
             } else {
                 if (existingRecordIndex !== -1) {
                     attendanceRecords[existingRecordIndex].signOut = timeString;
                     if(idNo) attendanceRecords[existingRecordIndex].id = idNo;
-                    if(yearProgram) attendanceRecords[existingRecordIndex].yearProgram = yearProgram;
+                    if(yearLevel) attendanceRecords[existingRecordIndex].yearLevel = yearLevel;
                 } else {
-                    attendanceRecords.unshift({ id: idNo || '—', name, yearProgram: yearProgram || '—', signIn: "", signOut: timeString, isLate: false });
+                    attendanceRecords.unshift({ id: idNo || '—', name, yearLevel: yearLevel || '—', signIn: "", signOut: timeString, isLate: false });
                 }
             }
             localStorage.setItem('csm_attendance_records', JSON.stringify(attendanceRecords));
@@ -539,7 +599,7 @@
             filteredRecords = attendanceRecords.filter(r => 
                 (r.id && r.id.toLowerCase().includes(query)) ||
                 (r.name && r.name.toLowerCase().includes(query)) || 
-                (r.yearProgram && r.yearProgram.toLowerCase().includes(query))
+                ((r.yearLevel || r.yearProgram) && String(r.yearLevel || r.yearProgram).toLowerCase().includes(query))
             );
             currentPage = 1;
             renderTable();
@@ -593,7 +653,7 @@
                 tr.innerHTML = `
                     <td class="py-3 px-3.5 font-mono font-bold text-[#7B1113]">${record.id || '—'}</td>
                     <td class="py-3 px-3.5 text-zinc-900 font-bold">${record.name || '—'}</td>
-                    <td class="py-3 px-3.5 text-zinc-600 font-semibold">${record.yearProgram || '—'}</td>
+                    <td class="py-3 px-3.5 text-zinc-600 font-semibold">${record.yearLevel || record.yearProgram || '—'}</td>
                     <td class="py-3 px-3.5 ${signInBg}">${record.signIn || '—'} ${record.isLate ? '<span class="text-[9px] block text-amber-700 font-bold">(Late)</span>' : ''}</td>
                     <td class="py-3 px-3.5 ${signOutClass}">${record.signOut || '—'}</td>
                 `;
