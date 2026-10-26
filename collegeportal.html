@@ -74,31 +74,6 @@
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative">
-    <!-- PORTAL LOGIN GATE -->
-    <div id="loginGate" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-        <form id="portalLoginForm" class="w-full max-w-sm bg-[#f9f5f0] rounded-3xl shadow-2xl border border-[#7B1113]/25 p-7 space-y-4">
-            <div class="flex justify-center">
-                <img src="lynxlogo.png" alt="CSM Portal Logo" class="w-20 h-20 object-contain" onerror="this.src='kasanlogo.jpg'">
-            </div>
-            <div class="text-center">
-                <h2 class="text-xl font-black text-[#7B1113]">CSM Attendance Portal</h2>
-                <p class="text-xs text-zinc-600 mt-1">Sign in to access the attendance system</p>
-            </div>
-            <div>
-                <label for="portalUsername" class="block text-xs font-bold text-zinc-700 mb-1">Username</label>
-                <input id="portalUsername" autocomplete="username" required class="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7B1113]/20" placeholder="Enter username">
-            </div>
-            <div>
-                <label for="portalPassword" class="block text-xs font-bold text-zinc-700 mb-1">Password</label>
-                <input id="portalPassword" type="password" autocomplete="current-password" required class="w-full px-4 py-3 rounded-xl border border-zinc-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#7B1113]/20" placeholder="Enter password">
-            </div>
-            <p id="loginError" class="hidden text-xs font-bold text-red-700" role="alert">Incorrect username or password.</p>
-            <button type="submit" class="w-full bg-[#7B1113] hover:bg-[#5c0c0e] text-white font-extrabold py-3 rounded-xl shadow transition">Sign In</button>
-            <p class="text-[10px] text-zinc-500 text-center">Authorized CSM personnel only</p>
-        </form>
-    </div>
-
-
     <div class="bg-image-container">
         <img src="kasangan.png" alt="Background Banner" onerror="this.style.display='none'">
     </div>
@@ -376,43 +351,6 @@
     <!-- SCRIPTS -->
     <script>
 
-        // Basic client-side login gate. For real security, validate credentials on a server.
-        const PORTAL_ACCOUNTS = [
-            { username: "csmadmin", password: "csm2026" },
-            { username: "jbtabimina", password: "papakongderrick" }
-        ];
-
-        function showPortalLogin() {
-            const loginGate = document.getElementById('loginGate');
-            if (loginGate) loginGate.classList.remove('hidden');
-        }
-
-        function hidePortalLogin() {
-            const loginGate = document.getElementById('loginGate');
-            if (loginGate) loginGate.classList.add('hidden');
-        }
-
-        document.getElementById('portalLoginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const username = document.getElementById('portalUsername').value.trim();
-            const password = document.getElementById('portalPassword').value;
-            const valid = PORTAL_ACCOUNTS.some(account =>
-                account.username === username && account.password === password
-            );
-            if (valid) {
-                sessionStorage.setItem('csm_portal_authenticated', 'true');
-                document.getElementById('loginError').classList.add('hidden');
-                hidePortalLogin();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
-        });
-
-        // Keep the login screen hidden after a successful login for this browser tab/session.
-        if (sessionStorage.getItem('csm_portal_authenticated') === 'true') {
-            hidePortalLogin();
-        }
-
         let currentMode = 'signin';
         let attendanceRecords = JSON.parse(localStorage.getItem('csm_attendance_records')) || [];
         let currentPage = 1;
@@ -422,8 +360,7 @@
 
         function confirmLogout() {
             if (confirm("Log out of the attendance portal?")) {
-                sessionStorage.removeItem('csm_portal_authenticated');
-                window.location.href = "index.html";
+                window.location.reload();
             }
         }
 
