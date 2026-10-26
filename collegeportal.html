@@ -374,7 +374,42 @@
 
     <!-- SCRIPTS -->
     <script>
-        
+
+        // Basic client-side login gate. For real security, validate credentials on a server.
+        const PORTAL_ACCOUNTS = [
+            { username: "csmadmin", password: "csm2026" },
+            { username: "jbtabimina", password: "papakongderrick" }
+        ];
+
+        function showPortalLogin() {
+            const loginGate = document.getElementById('loginGate');
+            if (loginGate) loginGate.classList.remove('hidden');
+        }
+
+        function hidePortalLogin() {
+            const loginGate = document.getElementById('loginGate');
+            if (loginGate) loginGate.classList.add('hidden');
+        }
+
+        document.getElementById('portalLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('portalUsername').value.trim();
+            const password = document.getElementById('portalPassword').value;
+            const valid = PORTAL_ACCOUNTS.some(account =>
+                account.username === username && account.password === password
+            );
+            if (valid) {
+                sessionStorage.setItem('csm_portal_authenticated', 'true');
+                document.getElementById('loginError').classList.add('hidden');
+                hidePortalLogin();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        });
+
+        // Keep the login screen hidden after a successful login for this browser tab/session.
+        if (sessionStorage.getItem('csm_portal_authenticated') === 'true') {
+            hidePortalLogin();
         }
 
         let currentMode = 'signin';
